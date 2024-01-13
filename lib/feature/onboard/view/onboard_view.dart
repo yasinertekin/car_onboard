@@ -18,14 +18,12 @@ final class OnboardView extends StatelessWidget {
         final cubit = context.read<OnboardCubit>();
         return Scaffold(
           backgroundColor: state.onboards[state.currentIndex].backgroundColor,
-          floatingActionButton: FloatingActionButton(
-            onPressed: cubit.onNext,
-            child: const Icon(
-              Icons.arrow_forward,
-            ),
+          floatingActionButton: _OnboardFloatingActionButton(
+            cubit: cubit,
+            state: state,
           ),
           appBar: AppBar(
-            title: const Text('OnboardView'),
+            backgroundColor: Colors.transparent,
           ),
           body: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -46,6 +44,30 @@ final class OnboardView extends StatelessWidget {
   }
 }
 
+final class _OnboardFloatingActionButton extends StatelessWidget {
+  const _OnboardFloatingActionButton({
+    required this.cubit,
+    required this.state,
+  });
+
+  final OnboardCubit cubit;
+  final OnboardState state;
+
+  @override
+  Widget build(BuildContext context) {
+    return FloatingActionButton(
+      elevation: 0,
+      backgroundColor: Colors.transparent,
+      splashColor: Colors.transparent,
+      highlightElevation: 0,
+      onPressed: cubit.onNext,
+      child: CustomAssetsSvg(
+        path: state.onboards[state.currentIndex].floatingActionButtonIcon,
+      ),
+    );
+  }
+}
+
 final class _CustomIndicator extends StatelessWidget {
   const _CustomIndicator(
     this.state,
@@ -56,22 +78,37 @@ final class _CustomIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Expanded(
-      child: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        mainAxisAlignment: MainAxisAlignment.end,
-        children: [
-          DotsIndicator(
-            position: state.currentIndex,
-            dotsCount: state.onboards.length,
-            decorator: DotsDecorator(
-              activeSize: const Size(18, 9),
-              activeShape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(5),
+      child: Padding(
+        padding: const EdgeInsets.all(10),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            DotsIndicator(
+              position: state.currentIndex,
+              dotsCount: state.onboards.length,
+              decorator: DotsDecorator(
+                activeColor: Colors.white,
+                color: Colors.white.withOpacity(0.5),
+                activeSize: const Size(18, 9),
+                activeShape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(5),
+                ),
               ),
             ),
-          ),
-          const Text('OnboardView'),
-        ],
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 8,
+                top: 5,
+              ),
+              child: Text(
+                'Skip',
+                style: Theme.of(context).textTheme.titleLarge?.copyWith(
+                      color: Colors.white,
+                    ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
@@ -100,8 +137,7 @@ final class _PageViewBuilder extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(onboard.title),
-              Text(onboard.description),
+              _OnboardTitleAndDescriptionColumn(onboard: onboard),
               CustomAssetsSvg(
                 path: onboard.image,
               ),
@@ -113,6 +149,77 @@ final class _PageViewBuilder extends StatelessWidget {
   }
 }
 
+final class _OnboardTitleAndDescriptionColumn extends StatelessWidget {
+  const _OnboardTitleAndDescriptionColumn({
+    required this.onboard,
+  });
+
+  final Onboard onboard;
+
+  @override
+  Widget build(BuildContext context) {
+    const height = 10.0;
+    return Padding(
+      padding: const EdgeInsets.only(
+        left: 8,
+        bottom: 8,
+      ),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        children: [
+          _OnboardTitle(
+            onboard: onboard,
+          ),
+          const SizedBox(
+            height: height,
+          ),
+          _OnboardDescription(
+            onboard: onboard,
+          ),
+        ],
+      ),
+    );
+  }
+}
+
+final class _OnboardDescription extends StatelessWidget {
+  const _OnboardDescription({
+    required this.onboard,
+  });
+
+  final Onboard onboard;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      onboard.description,
+      style: Theme.of(context).textTheme.titleLarge?.copyWith(
+            color: Colors.white,
+          ),
+    );
+  }
+}
+
+final class _OnboardTitle extends StatelessWidget {
+  const _OnboardTitle({
+    required this.onboard,
+  });
+
+  final Onboard onboard;
+
+  @override
+  Widget build(BuildContext context) {
+    return Text(
+      onboard.title,
+      style: Theme.of(context).textTheme.headlineLarge?.copyWith(
+            color: Colors.white,
+            fontWeight: FontWeight.bold,
+          ),
+    );
+  }
+}
+
 @immutable
 
 /// Onboards
@@ -120,34 +227,73 @@ final class Onboards {
   const Onboards._();
 
   /// List of onboards
-  static const List<Onboard> list = [
+  static List<Onboard> list = [
     Onboard(
-      floatingActionButtonIcon: 'assets/img_loader1.svg',
-      backgroundColor: Color(0xFFf0cf69),
-      title: 'Title 1',
-      description: 'Description 1',
-      image: 'assets/img_car1.svg',
+      floatingActionButtonIcon: OnboardImage.imgLoader1.path,
+      backgroundColor: const Color(0xFFf0cf69),
+      title: "Your first car without\na driver's license",
+      description: 'Goes to meet people who just got\ntheir license',
+      image: OnboardImage.imgCar1.path,
     ),
     Onboard(
-      floatingActionButtonIcon: 'assets/img_loader2.svg',
-      backgroundColor: Color(0xFFb7abfd),
-      title: 'Title 2',
-      description: 'Description 2',
-      image: 'assets/img_car2.svg',
+      floatingActionButtonIcon: OnboardImage.imgLoader2.path,
+      backgroundColor: const Color(0xFFb7abfd),
+      title: 'Always there: more than\n1000 cars in Tbilisi',
+      description:
+          'Our company is a leader by the\nnumber of cars in the fleet',
+      image: OnboardImage.imgCar2.path,
     ),
     Onboard(
-      floatingActionButtonIcon: 'assets/img_loader3.svg',
-      backgroundColor: Color(0xFFefb491),
-      title: 'Title 3',
-      description: 'Description 3',
-      image: 'assets/img_car3.svg',
+      floatingActionButtonIcon: OnboardImage.imgLoader3.path,
+      backgroundColor: const Color(0xFFefb491),
+      title: 'Do not pay for parking,\nmaintenance and gasoline',
+      description: 'We will pay for you,all expenses\nrelated to the car',
+      image: OnboardImage.imgCar3.path,
     ),
     Onboard(
-      floatingActionButtonIcon: 'assets/img_loader4.svg',
-      backgroundColor: Color(0xFF95b6ff),
-      title: 'Title 3',
-      description: 'Description 3',
-      image: 'assets/img_car4.svg',
+      floatingActionButtonIcon: OnboardImage.imgLoader4.path,
+      backgroundColor: const Color(0xFF95b6ff),
+      title: '29 car models: from Skoda\nOctavia to Porsche 911',
+      description: 'Choose between regular car models\nor exclusive ones',
+      image: OnboardImage.imgCar4.path,
     ),
   ];
+}
+
+enum OnboardImage {
+  imgLoader1,
+  imgLoader2,
+  imgLoader3,
+  imgLoader4,
+  imgCar1,
+  imgCar2,
+  imgCar3,
+  imgCar4,
+}
+
+extension OnboardImageExtension on OnboardImage {
+  String get fileName {
+    switch (this) {
+      case OnboardImage.imgLoader1:
+        return 'loader1';
+      case OnboardImage.imgLoader2:
+        return 'loader2';
+      case OnboardImage.imgLoader3:
+        return 'loader3';
+      case OnboardImage.imgLoader4:
+        return 'loader4';
+      case OnboardImage.imgCar1:
+        return 'car1';
+      case OnboardImage.imgCar2:
+        return 'car2';
+      case OnboardImage.imgCar3:
+        return 'car3';
+      case OnboardImage.imgCar4:
+        return 'car4';
+    }
+  }
+
+  String get path {
+    return 'assets/img_$fileName.svg';
+  }
 }
