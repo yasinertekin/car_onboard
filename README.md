@@ -2,6 +2,8 @@
 
 A new Flutter project.
 
+figma link where I got the design => [Figma]([url](https://www.figma.com/file/imaPdWjF3H2QpyrTBzjmmI/Onboarding-(Community)?type=design&node-id=0-1&mode=design))
+
 # Screenshots
 
 <p align="center">
