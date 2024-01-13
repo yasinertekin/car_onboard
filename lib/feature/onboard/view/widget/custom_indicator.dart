@@ -10,6 +10,8 @@ final class _CustomIndicator extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const padding = 10.0;
+    const borderRadius = 5.0;
+
     return Padding(
       padding: const EdgeInsets.all(padding),
       child: Row(
@@ -24,7 +26,7 @@ final class _CustomIndicator extends StatelessWidget {
                   color: ProjectColor.whiteOpacity.color,
                   activeSize: const Size(18, 9),
                   activeShape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(5),
+                    borderRadius: BorderRadius.circular(borderRadius),
                   ),
                 ),
               ),

@@ -1,19 +1,11 @@
 import 'package:car_onboard/feature/onboard/view/onboard_view.dart';
-import 'package:car_onboard/feature/onboard/view_model/onboard_cubit.dart';
+import 'package:car_onboard/product/initialize/project_state_initialize.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 
 void main() {
   runApp(
-    MultiBlocProvider(
-      providers: [
-        BlocProvider(
-          create: (context) => OnboardCubit(
-            onboards: Onboards.list,
-          ),
-        ),
-      ],
-      child: const _MyApp(),
+    const ProjectStateInitialize(
+      child: _MyApp(),
     ),
   );
 }
@@ -27,7 +19,6 @@ final class _MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
       home: const OnboardView(),
