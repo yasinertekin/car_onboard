@@ -2,6 +2,15 @@
 
 A new Flutter project.
 
+# Screenshots
+
+<p align="center">
+  <img src="assets/Simulator Screenshot - iPhone 15 - 2024-01-13 at 18.20.08.png" width="400" alt="Screenshot 1"> <img src="assets/Simulator Screenshot - iPhone 15 - 2024-01-13 at 18.20.14.png" width="400" alt="Screenshot 2">
+</p>
+<p align="center">
+  <img src="assets/Simulator Screenshot - iPhone 15 - 2024-01-13 at 18.20.17.png" width="400" alt="Screenshot 3"> <img src="assets/Simulator Screenshot - iPhone 15 - 2024-01-13 at 18.20.21.png" width="400" alt="Screenshot 4">
+</p>
+
 ## Getting Started
 
 This project is a starting point for a Flutter application.
